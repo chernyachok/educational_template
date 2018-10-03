@@ -1,0 +1,26 @@
+<h2>{{student.first_name}}`s classes</h2>
+{{#if messages.success}}
+  {{messages.success}}
+{{/if}}
+{{#if student.classes}}
+  <table cellspacing="0" cellpadding="0">
+    <thead>
+      <tr>
+        <th>Class id</th>
+        <th>Class name</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each student.classes}}
+        <tr>
+          <td>{{this.class_id}}</td>
+          <td>{{this.class_title}}</td>
+          <td><a href="/classes/{{this.class_id}}/lessons">View lessons</td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+{{else}}
+  <h5>You arent registered for any classes</h5>
+{{/if}}

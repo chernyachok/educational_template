@@ -14,6 +14,8 @@ const localStrategy = require('passport-local').Strategy;
 const indexRoute = require('./routes/index.js')
 const classRoute = require('./routes/classes.js');
 const usersRoute  =require('./routes/users.js')
+const students =require('./routes/students.js')
+
 
 var port = process.env.PORT || 3000;
 var host = process.env.DB_HOST || 'unknown host';
@@ -46,16 +48,15 @@ app.use((req,res,next)=>{
   res.locals.messages =require('express-messages')(req,res)
   if(req.url == '/'){
     res.locals.isHome = true;
-
   }
-
+  res.locals.user = req.user || null
   next()
 })
 
 app.use('/', indexRoute);
 app.use('/classes', classRoute);
 app.use('/users', usersRoute)
-
+app.use('/students', students)
 
 
 

@@ -71,3 +71,9 @@ module.exports.saveStudent = (newUser, newStudent, itsStudent,callback )=>{
     })
   })
 }
+
+module.exports.comparePassword = (candidatePassword , hash, callback)=>{
+    bcrypt.compare(candidatePassword, hash).then((isMatch)=>{
+      callback(null,isMatch)
+    })
+}

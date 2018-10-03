@@ -33,3 +33,17 @@ var studentSchema = new mongoose.Schema({
 var Student = mongoose.model('students', studentSchema);
 
 module.exports = Student;
+
+module.exports.getStudentByUsername = (username, callback)=>{//username
+  Student.findOne({username: username}).then((student)=>{
+    return callback(null, student)
+  }).catch((err)=>{
+    return callback("no such user found")
+  })
+}
+
+module.exports.registerClass = (info, callback)=>{
+  Student.findOneAndUpdate({username: info.student_username}, {$push:{classes:{class_id: info.class_id, class_title:info.class_title}}},{new: true}).then((updatedStudent)=>{
+    return callback(null, updatedStudent)
+  })
+}

@@ -74,27 +74,83 @@ router.route('/signup')
             if(err) throw err
           console.log('Student model created')
           req.flash('registered','Registered successfully!' )
-          res.redirect('/users/signup')
+          res.redirect('/')
         })
       }else{
         User.saveStudent(newUser, newStudent,false ,(err,instructor )=>{
             if(err) throw err
           console.log('Instructor model created')
           req.flash('registered','Registered successfully!' )
-          res.redirect('/users/signup')
+          res.redirect('/')
         })
       }
     }
  })
 
+passport.serializeUser((user, done)=>{
+  done(null, user._id)
+})
+
+passport.deserializeUser((id, done)=>{
+  User.getUserById(id, (err, user)=>{
+    done(err,user);
+  })
+})
+
+
 router.route('/login')
   .get((req,res)=>{
+    console.log(req.user)
   res.json({log: 'you arent registered'})
   })
-  .post((req,res)=>{
-    console.log(req.body);
-    res.json({message: 'msg'})
-  })
+  .post(passport.authenticate('local', {failureRedirect: '/',failureFlash: true, successFlash: 'welcome'}
 
+  ),(req,res)=>{
+    //console.log(req.body)
+    req.flash('login', "you are now logged in");
+    let usertype = req.user.type
+    res.redirect(`/${usertype}s/classes`)//check by success
+  })
+var session_end = (req,res,next)=>{
+  if(!req.isAuthenticated()){
+    return res.redirect('/')
+  }
+  next()
+}
+
+router.route('/logout').get(session_end, (req,res)=>{
+  req.logout();
+  req.flash('logout', "You logged out");
+  res.redirect('/')
+})
+
+
+  passport.use( 'local',new localStrategy(
+    function(username, password, done) {
+
+      User.getUserByUsername(username, function(err, user) {
+        if (err) { throw err }
+        if (!user) {
+          console.log('no such user exist')
+          return done(null, false, { message: 'Incorrect username' });
+        }
+
+        User.comparePassword(password, user.password, (err, isMatch)=>{
+          if(err) return done(err);
+          if(isMatch){
+            console.log('push into session ')
+            return done(null, user)
+          }else{
+            console.log('invalid password');
+            return done(null, false, {message: "invalid password"})
+          }
+
+
+        })
+
+
+      });
+    }
+  ));
 
 module.exports= router

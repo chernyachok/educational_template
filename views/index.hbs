@@ -1,4 +1,24 @@
-<h3>Welcome to elearn</h3>
+{{#if messages.logout}}
+  <ul>
+    <li>{{messages.logout}}</li>
+  </ul>
+{{/if}}
+{{#if messages.error}}
+  <ul>
+    <li>{{messages.error}}</li>
+  </ul>
+{{/if}}
+{{#if messages.login}}
+  <ul>
+    <li>{{messages.login}}</li>
+  </ul>
+{{/if}}
+{{#if messages.registered}}
+  <h3>Registered successfully</h3>
+{{else}}
+  <h3>Welcome to elearn</h3>
+{{/if}}
+
 <h2>eLearn</h2>
 <a href="/users/signup" class="button">Sign up free</a>
-<p>You need to register to free classes</p>
+<p>You need to log in to get classes</p>

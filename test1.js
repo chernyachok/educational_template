@@ -1,18 +1,8 @@
-const bcrypt = require('bcryptjs');
-
-var salt = bcrypt.genSaltSync(10);
+const User = require('./config/user');
 
 
-var comp = (callback)=>{
-  var temp = 123
-  temp = bcrypt.hash('user', salt).then((hash)=>{
-    callback(hash)
-  })
-
-}
-
-comp((data)=>{
+User.find({usernamsse: "wewedfdsd"}).then((data)=>{
   console.log(data)
+}).catch((err)=>{
+  console.log('made a mistake')
 })
-
-console.log('after ')

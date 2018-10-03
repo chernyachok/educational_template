@@ -10,9 +10,9 @@ router.route('/').get((req,res)=>{
 })
 
 router.route('/:id/details').get((req,res)=>{
-  classes.getClassById(req.params.id,function(err, data){
+  classes.getClassById(req.params.id,function(err, classes){
     if(err) return res.send(err);
-    res.render('classes/details', {data: data})
+    res.render('classes/details', {class: classes})
   })
 })
 

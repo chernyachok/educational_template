@@ -1,12 +1,12 @@
-{{#if data}}
-  <h3>{{data.id}}</h3>
-  <p>{{data.title}}</p>
-  <p>{{data.description}}</p>
-  <p>{{data.instructor}}</p>
+{{#if class}}
+  <h3>{{class._id}}</h3>
+  <p>{{class.title}}</p>
+  <p>{{class.description}}</p>
+  <b><p>{{class.instructor}}</p></b>
 {{/if}}
 {{#if user}}
   <form id="classRegForm" action="/students/classes/register" method="post">
-    <input type="hidden" name="student_id" value="{{user._id}}">
+    <input type="hidden" name="student_username" value="{{user.username}}">
     <input type="hidden" name="class_id" value="{{class._id}}">
     <input type="hidden" name="class_title" value="{{class.title}}">
     <input type="submit" class="button"  value="Register course">
