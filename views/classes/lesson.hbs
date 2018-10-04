@@ -1,0 +1,7 @@
+<a href="/classes/{{class._id}}/lessons">Back to lessons</a>
+{{#if lesson}}
+  <h4>{{lesson.lesson_title}}</h4>
+  <p>{{lesson.lesson_body}}</p>
+{{else}}
+  <li class="alert-danger">Such lesson doesnt exist.</li>
+{{/if}}

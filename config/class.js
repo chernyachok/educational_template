@@ -6,32 +6,43 @@ var schema = new mongoose.Schema({
   description: {type:String},
   instructor : {type:String},
   lessons: [{
-    lessons_number: {type: Number},
-    lessons_title: {type: String},
-    lessons_body: {type: String}
+    lesson_number: {type: Number},
+    lesson_title: {type: String},
+    lesson_body: {type: String}
   }]
 })
 
-var model = mongoose.model('classes', schema);
+var Class = mongoose.model('classes', schema);
 
-module.exports = model;
+module.exports = Class;
 
 
 module.exports.getClasses = (callback,limit)=>{
-  model.find({}).limit(limit).then((data)=>{
+  Class.find({}).limit(limit).then((data)=>{
 
     return callback(null, data)
   }).catch((err)=>{
-    return callback(" its find suka made mistake");
+    return callback("No classes found");
   })
 }
 
 
 module.exports.getClassById = (id , callback)=>{
-  model.findOne({_id: id}).then((classname)=>{
-    console.log(classname)
+  Class.findOne({_id: id}).then((classname)=>{
+    //console.log(classname)
     return callback(null, classname);
   }).catch((err)=>{
-    return callback("no such id");
+    return callback("No classes found");
+  })
+}
+
+
+module.exports.pushLessons =(info, callback)=>{
+  Class.findOneAndUpdate({_id: info.class_id}, {$push: {lessons: {lesson_number: info.lesson_number, lesson_title: info.lesson_title, lesson_body:info.lesson_body}}})
+  .then(()=>{
+    return callback(null, 'updated')
+  })
+  .catch((err)=>{
+    callback('Cant modify, no such row')
   })
 }

@@ -1,11 +1,15 @@
-{{#if messages.registered}}
-  <h3>Registered successfully</h3>
+{{#if messages.error}}
+  <ul>
+    <li>{{messages.error}}</li>
+  </ul>
 {{else}}
     <h2>Create an account</h2>
 {{/if}}
 {{#if errors}}
   {{#each errors}}
-    {{this}}
+    <ul>
+      <li class="alert-danger">{{this.msg}}</li>
+    </ul>
   {{/each}}
 {{/if}}
 <form class="" id="regForm" action="/users/signup" method="post" enctype="application/x-www-form-urlencoded">

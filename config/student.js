@@ -43,7 +43,17 @@ module.exports.getStudentByUsername = (username, callback)=>{//username
 }
 
 module.exports.registerClass = (info, callback)=>{
-  Student.findOneAndUpdate({username: info.student_username}, {$push:{classes:{class_id: info.class_id, class_title:info.class_title}}},{new: true}).then((updatedStudent)=>{
-    return callback(null, updatedStudent)
+  Student.findOne({username: info.student_username}).then((row)=>{
+    var existingClass = row.classes;//accces to all classes of st
+    for(var i=existingClass.length-1; i>=0; i--){
+      if(info.class_id == existingClass[i].class_id){
+        return callback("Such course alredy registered")
+      }
+    }
+    Student.findOneAndUpdate({username: info.student_username}, {$push:{classes:{class_id: info.class_id, class_title:info.class_title}}},{new: true}).then((updatedStudent)=>{
+      return callback(null, updatedStudent)
+    })
+  }).catch((err)=>{
+    console.log('NO SUCH USERNAME')
   })
 }

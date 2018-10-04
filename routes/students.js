@@ -24,8 +24,10 @@ router.route('/classes/register').post((req,res)=>{
     info['class_title'] = req.body.class_title;
     //console.log(info)
     Student.registerClass(info, (err,updatedStudent)=>{
-      if(err)
-        console.log(err)
+      if(err){
+        req.flash('error', err)
+        res.redirect('/classes')
+      }
       else{
         //console.log("user updated with classees")
         req.flash('success', "Class registered successfully")

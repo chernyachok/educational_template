@@ -6,11 +6,16 @@ const Instructor = require('../config/instructor')
 const Student =require('../config/student')
 const bcrypt = require('bcryptjs');
 //const flash = require('express-flash')
-
+var ensureAuth = (req,res, next)=>{
+  if(!req.isAuthenticated()){
+    return next()
+  }
+  res.redirect('/')
+}
 
 
 router.route('/signup')
-  .get((req,res)=>{
+  .get(ensureAuth,(req,res)=>{
     res.render('users/signup');
   })
   .post((req,res)=>{
@@ -26,7 +31,6 @@ router.route('/signup')
     var password_2 = req.body.password_2;
     var type = req.body.type;
 
-
     req.checkBody('first_name', 'first name is required').notEmpty()
     req.checkBody('last_name', 'last name is required ').notEmpty()
     req.checkBody('email', 'email is required').notEmpty()
@@ -35,7 +39,7 @@ router.route('/signup')
     req.checkBody('password', 'password is required').notEmpty()
     req.checkBody('password_2', 'password2 is required').notEmpty()
     req.checkBody('password_2', 'passwords do not match').equals(req.body.password);
-
+    //console.log(req.validationErrors())
     var errors = req.validationErrors()
     if(errors){
       res.render('users/signup',{
@@ -73,14 +77,14 @@ router.route('/signup')
         User.saveStudent(newUser,newStudent,true ,function(err,student){
             if(err) throw err
           console.log('Student model created')
-          req.flash('registered','Registered successfully!' )
+          req.flash('success','Registered successfully!' )
           res.redirect('/')
         })
       }else{
         User.saveStudent(newUser, newStudent,false ,(err,instructor )=>{
             if(err) throw err
           console.log('Instructor model created')
-          req.flash('registered','Registered successfully!' )
+          req.flash('success','Registered successfully!' )
           res.redirect('/')
         })
       }
@@ -99,8 +103,8 @@ passport.deserializeUser((id, done)=>{
 
 
 router.route('/login')
-  .get((req,res)=>{
-    console.log(req.user)
+  .get(ensureAuth,(req,res)=>{
+    //console.log(req.user.type)
   res.json({log: 'you arent registered'})
   })
   .post(passport.authenticate('local', {failureRedirect: '/',failureFlash: true, successFlash: 'welcome'}

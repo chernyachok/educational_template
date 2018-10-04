@@ -15,7 +15,7 @@ const indexRoute = require('./routes/index.js')
 const classRoute = require('./routes/classes.js');
 const usersRoute  =require('./routes/users.js')
 const students =require('./routes/students.js')
-
+const instructors =require('./routes/instructors.js')
 
 var port = process.env.PORT || 3000;
 var host = process.env.DB_HOST || 'unknown host';
@@ -49,7 +49,8 @@ app.use((req,res,next)=>{
   if(req.url == '/'){
     res.locals.isHome = true;
   }
-  res.locals.user = req.user || null
+  res.locals.user = req.user || null;
+  //res.locals.usertype = req.user.type
   next()
 })
 
@@ -57,7 +58,7 @@ app.use('/', indexRoute);
 app.use('/classes', classRoute);
 app.use('/users', usersRoute)
 app.use('/students', students)
-
+app.use('/instructors', instructors)
 
 
 

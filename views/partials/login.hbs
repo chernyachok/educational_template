@@ -1,5 +1,5 @@
 {{#if user}}
-  <h5>Welcome, {{user.username}}</h5>
+  <h5>Welcome, {{user.username}} !</h5>
   <ul>
     <li><a href="/{{user.type}}s/classes">My classes</a></li>
     <li><a href="/users/logout">Logout</a></li>
@@ -10,7 +10,7 @@
       <label for="" >Username:</label><br>
       <input type="text" name="username"><br>
       <label for="" >Password:</label><br>
-      <input type="password" name="password">
+      <input type="password" name="password"><br>
       <input type="submit" value="Log In">
     </form>
 {{/if}}

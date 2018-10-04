@@ -1,5 +1,8 @@
-<h2>{{student.first_name}}`s classes</h2>
-{{#if student.classes}}
+<h2>{{instructor.first_name}}`s classes</h2>
+{{#if messages.success}}
+  {{messages.success}}
+{{/if}}
+{{#if instructor.classes}}
   <table cellspacing="0" cellpadding="0">
     <thead>
       <tr>
@@ -9,11 +12,12 @@
       </tr>
     </thead>
     <tbody>
-      {{#each student.classes}}
+      {{#each instructor.classes}}
         <tr>
           <td>{{this.class_id}}</td>
           <td>{{this.class_title}}</td>
           <td><a href="/classes/{{this.class_id}}/lessons">View lessons</td>
+            <td><a href="/instructors/classes/{{this.class_id}}/lessons/new">Add lesson</td>
         </tr>
       {{/each}}
     </tbody>

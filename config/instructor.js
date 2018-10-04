@@ -33,3 +33,28 @@ var instructorSchema = new mongoose.Schema({
 var Instructor = mongoose.model('instructor', instructorSchema);
 
 module.exports = Instructor;
+
+
+module.exports.getInstructorByUsername = (username, callback)=>{//username
+  Instructor.findOne({username: username}).then((instructor)=>{
+    return callback(null, instructor)
+  }).catch((err)=>{
+    return callback("no such user found")
+  })
+}
+
+module.exports.registerClass = (info, callback)=>{
+  Instructor.findOne({username: info.instructor_username}).then((row)=>{
+    var existingClass = row.classes;//accces to all classes of st
+    for(var i=existingClass.length-1; i>=0; i--){
+      if(info.class_id == existingClass[i].class_id){
+        return callback("Such course alredy registered")
+      }
+    }
+    Instructor.findOneAndUpdate({username: info.instructor_username}, {$push:{classes:{class_id: info.class_id, class_title:info.class_title}}},{new: true}).then((updatedInstructor)=>{
+      return callback(null, updatedInstructor)
+    })
+  }).catch((err)=>{
+    console.log('NO SUCH USERNAME')
+  })
+}
